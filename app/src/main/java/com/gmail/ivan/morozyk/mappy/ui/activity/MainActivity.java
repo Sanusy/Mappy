@@ -1,4 +1,4 @@
-package com.gmail.ivan.morozyk.mappy.ui;
+package com.gmail.ivan.morozyk.mappy.ui.activity;
 
 import android.os.Bundle;
 
