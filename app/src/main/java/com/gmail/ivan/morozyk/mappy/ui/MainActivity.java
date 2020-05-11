@@ -1,6 +1,8 @@
-package com.gmail.ivan.morozyk.mappy;
+package com.gmail.ivan.morozyk.mappy.ui;
 
 import android.os.Bundle;
+
+import com.gmail.ivan.morozyk.mappy.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
