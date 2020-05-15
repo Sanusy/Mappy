@@ -33,4 +33,8 @@ dependencies {
     //moxy
     implementation 'com.github.moxy-community:moxy-androidx:2.1.2'
     annotationProcessor 'com.github.moxy-community:moxy-compiler:2.1.2'
+
+    //Rx
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.3'
 }
