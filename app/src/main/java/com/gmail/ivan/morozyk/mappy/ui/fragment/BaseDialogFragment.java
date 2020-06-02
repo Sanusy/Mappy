@@ -15,17 +15,8 @@ import moxy.presenter.ProvidePresenter;
 public abstract class BaseDialogFragment<P extends BasePresenter> extends MvpAppCompatDialogFragment
         implements BaseContract.View {
 
-    @Nullable
-    @InjectPresenter
-    private P presenter;
-
     @ProvidePresenter
     public abstract P providePresenter();
-
-    @NonNull
-    public P getPresenter() {
-        return Objects.requireNonNull(presenter);
-    }
 
     @Override
     public void onError(@Nullable Throwable error) {
@@ -42,7 +33,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends MvpApp
         requireBaseActivity().hideProgress();
     }
 
-    public BaseActivity requireBaseActivity() {
-        return (BaseActivity) requireActivity();
+    public BaseActivity<?> requireBaseActivity() {
+        return (BaseActivity<?>) requireActivity();
     }
 }

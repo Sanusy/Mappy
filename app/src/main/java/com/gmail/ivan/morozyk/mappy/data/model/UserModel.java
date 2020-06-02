@@ -5,6 +5,7 @@ import com.gmail.ivan.morozyk.mappy.data.entity.User;
 
 import androidx.annotation.NonNull;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 public interface UserModel {
 
@@ -13,5 +14,6 @@ public interface UserModel {
     @NonNull
     Flowable<Map> getMaps(@NonNull User user);
 
-    boolean exists(@NonNull User user);
+    @NonNull
+    Single<User> getUser(@NonNull String email);
 }

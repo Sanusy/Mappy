@@ -1,54 +1,69 @@
 package com.gmail.ivan.morozyk.mappy.data.entity;
 
+import com.google.firebase.firestore.DocumentId;
+
 import java.util.Date;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class Message {
 
-    private int id;
-
-    private final int userId;
+    @DocumentId
+    @Nullable
+    private String id;
 
     @Nullable
-    private final String text;
+    private String senderName;
 
     @Nullable
-    private final String photoLink;
+    private String text;
 
     @Nullable
-    private final Point point;
+    private String photoLink;
 
-    @NonNull
-    private final Date date;
+    @Nullable
+    private Point point;
 
-    public Message(int userId,
+    @Nullable
+    private Date date;
+
+    public Message() {
+    }
+
+    public Message(@NonNull String senderName,
                    @Nullable String text,
                    @Nullable String photoLink,
                    @Nullable Point point, @NonNull Date date) {
-        this.userId = userId;
+        this.id = "";
+        this.senderName = senderName;
         this.text = text;
         this.photoLink = photoLink;
         this.point = point;
         this.date = date;
     }
 
-    public Message(int id,
-                   int userId,
+    public Message(@NonNull String id,
+                   @NonNull String senderName,
                    @Nullable String text,
                    @Nullable String photoLink,
                    @Nullable Point point, @NonNull Date date) {
-        this(userId, text, photoLink, point, date);
+        this(senderName, text, photoLink, point, date);
+
         this.id = id;
+
+        // TODO: 6/2/2020 check if this constructor needed
     }
 
-    public int getId() {
-        return id;
+    @NonNull
+    public String getId() {
+        return Objects.requireNonNull(id);
     }
 
-    public int getUserId() {
-        return userId;
+    @NonNull
+    public String getSenderName() {
+        return Objects.requireNonNull(senderName);
     }
 
     @Nullable
@@ -66,8 +81,12 @@ public class Message {
         return point;
     }
 
+    public void setPoint(@Nullable Point point) {
+        this.point = point;
+    }
+
     @NonNull
     public Date getDate() {
-        return date;
+        return Objects.requireNonNull(date);
     }
 }
