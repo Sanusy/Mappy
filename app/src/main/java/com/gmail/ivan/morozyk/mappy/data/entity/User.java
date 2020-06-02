@@ -1,38 +1,52 @@
 package com.gmail.ivan.morozyk.mappy.data.entity;
 
+import com.google.firebase.firestore.DocumentId;
+
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class User {
 
-    private int id;
+    @DocumentId
+    @Nullable
+    private String id;
 
-    @NonNull
-    private final String email;
+    @Nullable
+    private String email;
 
-    @NonNull
-    private final String name;
+    @Nullable
+    private String name;
+
+    public User() {}
 
     public User(@NonNull String email, @NonNull String name) {
+        this.id = "";
         this.email = email;
         this.name = name;
     }
 
-    public User(int id, @NonNull String email, @NonNull String name) {
+    public User(@NonNull String id, @NonNull String email, @NonNull String name) {
         this(email, name);
+
         this.id = id;
+
+        // TODO: 6/2/2020 check if this constructor needed
     }
 
-    public int getId() {
-        return id;
+    @NonNull
+    public String getId() {
+        return Objects.requireNonNull(id);
     }
 
     @NonNull
     public String getEmail() {
-        return email;
+        return Objects.requireNonNull(email);
     }
 
     @NonNull
     public String getName() {
-        return name;
+        return Objects.requireNonNull(name);
     }
 }

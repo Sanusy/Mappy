@@ -1,5 +1,7 @@
 package com.gmail.ivan.morozyk.mappy.data.model;
 
+import android.net.Uri;
+
 import com.gmail.ivan.morozyk.mappy.data.entity.Point;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ public interface PointModel {
     void deletePoint(@NonNull Point point);
 
     void editPoint(@NonNull Point point);
+
+    void addPhoto(@NonNull Uri photoUri, @NonNull Point point);
 
     @NonNull
     Flowable<Point> getPoints();

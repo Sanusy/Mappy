@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "152247830443",
+    "firebase_url": "https://mappy-3d3bb.firebaseio.com",
+    "project_id": "mappy-3d3bb",
+    "storage_bucket": "mappy-3d3bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152247830443:android:6200a949700ebc306534ee",
+        "android_client_info": {
+          "package_name": "com.gmail.ivan.morozyk.mappy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152247830443-be8v1v4gbo7tb3no41otvubgio0525lh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJkAEIUKP98Z_uvVmAQAFvs2uOCiPhS_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152247830443-be8v1v4gbo7tb3no41otvubgio0525lh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
