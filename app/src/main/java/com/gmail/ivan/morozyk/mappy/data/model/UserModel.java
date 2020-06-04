@@ -16,4 +16,7 @@ public interface UserModel {
 
     @NonNull
     Single<User> getUser(@NonNull String email);
+
+    @NonNull
+    Single<User> getSelf();
 }

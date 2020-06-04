@@ -6,28 +6,37 @@ import android.util.Log;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.BaseContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.BasePresenter;
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
-import moxy.MvpAppCompatActivity;
-import moxy.presenter.ProvidePresenter;
+import java.util.Objects;
 
-public abstract class BaseActivity<P extends BasePresenter> extends MvpAppCompatActivity
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.viewbinding.ViewBinding;
+import moxy.MvpAppCompatActivity;
+
+public abstract class BaseActivity<P extends BasePresenter, B extends ViewBinding>
+        extends MvpAppCompatActivity
         implements BaseContract.View {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
-    @ProvidePresenter
-    protected abstract P providePresenter();
+    @Nullable
+    private B binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutResId());
+        binding = inflateBinding();
+        setContentView(getBinding().getRoot());
         setTitle(getToolBarTitle());
     }
 
-    @LayoutRes
-    protected abstract int getLayoutResId();
+    @NonNull
+    public B getBinding() {
+        return Objects.requireNonNull(binding);
+    }
+
+    @NonNull
+    protected abstract B inflateBinding();
 
     public abstract String getToolBarTitle();
 
