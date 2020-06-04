@@ -48,7 +48,7 @@ public abstract class BaseFragment<P extends BasePresenter> extends MvpAppCompat
     }
 
     @NonNull
-    public BaseActivity<?> requireBaseActivity() {
-        return (BaseActivity<?>) requireActivity();
+    public BaseActivity<?, ?> requireBaseActivity() {
+        return (BaseActivity<?, ?>) requireActivity();
     }
 }

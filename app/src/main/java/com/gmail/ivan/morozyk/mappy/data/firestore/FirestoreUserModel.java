@@ -1,12 +1,12 @@
 package com.gmail.ivan.morozyk.mappy.data.firestore;
 
-import android.util.Log;
-
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.data.model.UserModel;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -24,16 +24,17 @@ public class FirestoreUserModel implements UserModel {
     @NonNull
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    @NonNull
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+
     @Override
     public void addUser(@NonNull User user) {
         db.collection("users")
           .whereEqualTo("email", user.getEmail())
           .get()
           .addOnCompleteListener(task -> {
-              Log.d("TAG", "addUser: ");
               if (task.isSuccessful() && Objects.requireNonNull(task.getResult())
                                                 .isEmpty()) {
-                  Log.d("TAG", "addUser: adding");
                   db.collection("users")
                     .document(user.getEmail())
                     .set(user);
@@ -82,6 +83,28 @@ public class FirestoreUserModel implements UserModel {
                   subscriber.onSuccess(documentSnapshot.toObject(User.class));
               })
               .addOnFailureListener(subscriber::onError);
+        });
+    }
+
+    @NonNull
+    @Override
+    public Single<User> getSelf() {
+        return Single.create(subscriber -> {
+            FirebaseUser user = auth.getCurrentUser();
+            String email;
+            if (user != null) {
+                email = user.getEmail();
+
+                db.collection("users")
+                  .document(Objects.requireNonNull(email))
+                  .get()
+                  .addOnSuccessListener(documentSnapshot -> {
+                      subscriber.onSuccess(documentSnapshot.toObject(User.class));
+                  })
+                  .addOnFailureListener(subscriber::onError);
+            } else {
+                subscriber.onError(null);
+            }
         });
     }
 }

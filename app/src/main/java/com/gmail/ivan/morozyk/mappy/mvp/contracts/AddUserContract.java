@@ -15,8 +15,4 @@ public interface AddUserContract {
 
         void addUser(@NonNull String email);
     }
-
-    interface Router extends BaseContract.Router {
-
-    }
 }
