@@ -5,19 +5,35 @@ import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import io.reactivex.rxjava3.core.Flowable;
+import moxy.viewstate.strategy.AddToEndSingleStrategy;
+import moxy.viewstate.strategy.SkipStrategy;
+import moxy.viewstate.strategy.StateStrategyType;
 
 public interface MapListContract {
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     interface View extends BaseContract.View {
 
-        void showMaps(@NonNull List<Map> mapList);
+        @StateStrategyType(SkipStrategy.class)
+        void showMaps(@NonNull Flowable<Map> maps);
 
-        void showEmpty();
+        void showEmpty(boolean empty);
+
+        void removeMap(@NonNull String mapId);
+
+        void editMap(@NonNull Map map);
+
+        void openNewMap();
+
+        void openMap(@NonNull Map map);
     }
 
     interface Presenter extends BaseContract.Presenter {
 
         void loadMaps();
+
+        void emptyMap(boolean empty);
 
         void newMap();
 

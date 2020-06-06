@@ -4,22 +4,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.gmail.ivan.morozyk.mappy.ui.holder.BaseViewHolder;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewbinding.ViewBinding;
+import io.reactivex.rxjava3.core.Flowable;
 
-public abstract class BaseRecyclerAdapter<E> extends RecyclerView.Adapter<BaseViewHolder<E>> {
+public abstract class BaseRecyclerAdapter<E, B extends ViewBinding>
+        extends RecyclerView.Adapter<BaseViewHolder<E, B>> {
 
     @NonNull
-    private final List<E> entityList = new ArrayList<>();
+    protected final List<E> entityList = new ArrayList<>();
 
     @NonNull
     @Override
-    public BaseViewHolder<E> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseViewHolder<E, B> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                                   .inflate(getLayoutId(), parent, false);
 
@@ -29,16 +33,21 @@ public abstract class BaseRecyclerAdapter<E> extends RecyclerView.Adapter<BaseVi
     @LayoutRes
     protected abstract int getLayoutId();
 
-    public void setEntityList(Collection<E> entityList) {
-        this.entityList.clear();
-        this.entityList.addAll(entityList);
-        notifyDataSetChanged();
+    public void observeAdd(Flowable<E> entitities) {
+        entitities.subscribe(entity -> {
+            entityList.add(entity);
+            notifyDataSetChanged();
+        });
     }
 
-    public abstract BaseViewHolder<E> createViewHolder(@NonNull View view);
+    public abstract void remove(@NonNull String entityId);
+
+    public abstract void edit(@NonNull E entity);
+
+    public abstract BaseViewHolder<E, B> createViewHolder(@NonNull View view);
 
     @Override
-    public void onBindViewHolder(@NonNull BaseViewHolder<E> holder, int position) {
+    public void onBindViewHolder(@NonNull BaseViewHolder<E, B> holder, int position) {
         holder.bind(entityList.get(position));
     }
 

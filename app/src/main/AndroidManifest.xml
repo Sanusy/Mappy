@@ -21,6 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.MapListActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
