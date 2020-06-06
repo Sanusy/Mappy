@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Mappy</string>
+
+    <!-- Map List Strings -->
+    <string name="empty_map_list">There is no maps!</string>
 </resources>

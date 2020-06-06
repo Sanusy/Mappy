@@ -1,7 +1,6 @@
 package com.gmail.ivan.morozyk.mappy.ui.activity;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
@@ -62,8 +61,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter, ActivitySplash
 
     @Override
     public void openMapList() {
-        // TODO: 6/4/2020 open MapList in another task
-        Log.d("TAG", "openMapList: 111");
+        startActivity(new Intent(this, MapListActivity.class));
     }
 
     @Override
