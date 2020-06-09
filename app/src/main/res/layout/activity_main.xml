@@ -7,28 +7,8 @@
     android:layout_height="match_parent"
     tools:context="ui.activity.MainActivity">
 
-    <Button
-        android:id="@+id/capture_photo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CAPTURE"
-        app:layout_constraintBottom_toTopOf="@+id/image"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/image"
+    <ImageButton
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/load_photo"
-        android:text="LOAD"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="wrap_content"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

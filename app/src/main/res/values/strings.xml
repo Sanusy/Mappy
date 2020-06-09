@@ -3,4 +3,5 @@
 
     <!-- Map List Strings -->
     <string name="empty_map_list">There is no maps!</string>
+    <string name="logout">Logout</string>
 </resources>
