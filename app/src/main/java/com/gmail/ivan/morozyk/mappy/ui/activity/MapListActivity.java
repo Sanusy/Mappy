@@ -1,6 +1,9 @@
 package com.gmail.ivan.morozyk.mappy.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.gmail.ivan.morozyk.mappy.R;
@@ -36,7 +39,7 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
         getBinding().addMapFab.setOnClickListener(view -> {
             presenter.newMap();
 
-            // TODO: 6/5/2020 temp fab action. Will be deleted in another task
+            // TODO: 6/5/2020 temp fab action. Will be deleted in another task/ will call presenter.newMap();
             Map map = new Map("Test Map", "Test Description");
 
             FirestoreUserModel userModel = new FirestoreUserModel();
@@ -52,6 +55,21 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
 
         getMvpDelegate().onAttach();
         presenter.loadMaps();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_map_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.log_out_item) {
+            presenter.logOut();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -85,6 +103,11 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
     @Override
     public void openMap(@NonNull Map map) {
         // TODO: 6/5/2020 opens MapFragment
+    }
+
+    @Override
+    public void logOut() {
+        startActivity(new Intent(this, SplashActivity.class));
     }
 
     @NonNull

@@ -27,6 +27,8 @@ public interface MapListContract {
         void openNewMap();
 
         void openMap(@NonNull Map map);
+
+        void logOut();
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -39,7 +41,7 @@ public interface MapListContract {
 
         void openMap(@NonNull Map map);
 
-        void signOut();
+        void logOut();
     }
 
     interface Router {

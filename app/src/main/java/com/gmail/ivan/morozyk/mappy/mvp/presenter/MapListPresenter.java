@@ -46,8 +46,9 @@ public class MapListPresenter extends BasePresenter<MapListContract.View>
     }
 
     @Override
-    public void signOut() {
+    public void logOut() {
         auth.signOut();
+        getViewState().logOut();
     }
 
     private void observeMapChanges() {
