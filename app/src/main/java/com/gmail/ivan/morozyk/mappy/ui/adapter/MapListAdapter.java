@@ -29,6 +29,22 @@ public class MapListAdapter extends BaseRecyclerAdapter<Map, ItemMapListBinding>
     }
 
     @Override
+    public BaseViewHolder<Map, ItemMapListBinding> createViewHolder(@NonNull View view) {
+        return new MapListHolder(ItemMapListBinding.bind(view), presenter);
+    }
+
+    @Override
+    public void observeAdd(Flowable<Map> entitities) {
+        super.observeAdd(entitities.doOnSubscribe(map -> presenter.emptyMap(entityList.isEmpty()))
+                                   .doAfterNext(map -> {
+                                       presenter.emptyMap(entityList.isEmpty());
+                                       Collections.sort(entityList,
+                                                        (map1, map2) -> map1.getTimeStamp()
+                                                                            .compareTo(map2.getTimeStamp()));
+                                   }));
+    }
+
+    @Override
     public void remove(@NonNull String entityId) {
         Map map;
         for (int i = 0; i < entityList.size(); i++) {
@@ -46,17 +62,6 @@ public class MapListAdapter extends BaseRecyclerAdapter<Map, ItemMapListBinding>
     }
 
     @Override
-    public void observeAdd(Flowable<Map> entitities) {
-        super.observeAdd(entitities.doOnSubscribe(map -> presenter.emptyMap(entityList.isEmpty()))
-                                   .doAfterNext(map -> {
-                                       presenter.emptyMap(entityList.isEmpty());
-                                       Collections.sort(entityList,
-                                                        (map1, map2) -> map1.getTimeStamp()
-                                                                            .compareTo(map2.getTimeStamp()));
-                                   }));
-    }
-
-    @Override
     public void edit(@NonNull Map entity) {
         for (Map map : entityList) {
             if (map.equals(entity)) {
@@ -65,10 +70,5 @@ public class MapListAdapter extends BaseRecyclerAdapter<Map, ItemMapListBinding>
                 notifyDataSetChanged();
             }
         }
-    }
-
-    @Override
-    public BaseViewHolder<Map, ItemMapListBinding> createViewHolder(@NonNull View view) {
-        return new MapListHolder(ItemMapListBinding.bind(view), presenter);
     }
 }

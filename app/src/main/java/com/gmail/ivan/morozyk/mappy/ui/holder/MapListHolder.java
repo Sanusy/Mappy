@@ -6,7 +6,10 @@ import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.databinding.ItemMapListBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapListPresenter;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class MapListHolder extends BaseViewHolder<Map, ItemMapListBinding>
         implements View.OnClickListener {
@@ -14,7 +17,7 @@ public class MapListHolder extends BaseViewHolder<Map, ItemMapListBinding>
     @NonNull
     private final MapListPresenter presenter;
 
-    @NonNull
+    @Nullable
     private Map map;
 
     public MapListHolder(@NonNull ItemMapListBinding binding,
@@ -35,6 +38,6 @@ public class MapListHolder extends BaseViewHolder<Map, ItemMapListBinding>
 
     @Override
     public void onClick(View v) {
-        presenter.openMap(map);
+        presenter.openMap(Objects.requireNonNull(map));
     }
 }

@@ -33,17 +33,6 @@ public abstract class BaseRecyclerAdapter<E, B extends ViewBinding>
     @LayoutRes
     protected abstract int getLayoutId();
 
-    public void observeAdd(Flowable<E> entitities) {
-        entitities.subscribe(entity -> {
-            entityList.add(entity);
-            notifyDataSetChanged();
-        });
-    }
-
-    public abstract void remove(@NonNull String entityId);
-
-    public abstract void edit(@NonNull E entity);
-
     public abstract BaseViewHolder<E, B> createViewHolder(@NonNull View view);
 
     @Override
@@ -55,4 +44,15 @@ public abstract class BaseRecyclerAdapter<E, B extends ViewBinding>
     public int getItemCount() {
         return entityList.size();
     }
+
+    public void observeAdd(Flowable<E> entitities) {
+        entitities.subscribe(entity -> {
+            entityList.add(entity);
+            notifyDataSetChanged();
+        });
+    }
+
+    public abstract void remove(@NonNull String entityId);
+
+    public abstract void edit(@NonNull E entity);
 }

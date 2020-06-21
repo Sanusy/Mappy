@@ -15,6 +15,7 @@ import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapListContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapListPresenter;
 import com.gmail.ivan.morozyk.mappy.ui.adapter.MapListAdapter;
 
+import java.util.Collections;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,7 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
     MapListPresenter presenter;
 
     @Nullable
-    MapListAdapter recyclerAdapter;
+    private MapListAdapter recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +39,6 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
 
         getBinding().addMapFab.setOnClickListener(view -> {
             presenter.newMap();
-
-            // TODO: 6/5/2020 temp fab action. Will be deleted in another task/ will call presenter.newMap();
-            Map map = new Map("Test Map", "Test Description");
-
-            FirestoreUserModel userModel = new FirestoreUserModel();
-            userModel.getSelf()
-                     .subscribe(user -> new FirestoreMapModel().addMap(
-                             map,
-                             user));
         });
 
         recyclerAdapter = new MapListAdapter(presenter);
@@ -97,7 +89,7 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
 
     @Override
     public void openNewMap() {
-        // TODO: 6/5/2020 opens NewMapActivity
+        startActivity(new Intent(this, NewMapActivity.class));
     }
 
     @Override
