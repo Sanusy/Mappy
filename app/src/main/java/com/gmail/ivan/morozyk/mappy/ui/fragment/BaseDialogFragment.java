@@ -11,9 +11,6 @@ import moxy.presenter.ProvidePresenter;
 public abstract class BaseDialogFragment<P extends BasePresenter> extends MvpAppCompatDialogFragment
         implements BaseContract.View {
 
-    @ProvidePresenter
-    public abstract P providePresenter();
-
     @Override
     public void onError(@Nullable Throwable error) {
         requireBaseActivity().onError(error);

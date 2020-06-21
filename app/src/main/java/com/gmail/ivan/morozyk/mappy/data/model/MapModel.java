@@ -3,9 +3,12 @@ package com.gmail.ivan.morozyk.mappy.data.model;
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 public interface MapModel {
 
@@ -16,7 +19,7 @@ public interface MapModel {
 
     void addUser(@NonNull User user, @NonNull Map map);
 
-    void addMap(@NonNull Map map, @NonNull User creator, @Nullable User... moreUsers);
+    Single<String> addMap(@NonNull Map map, @NonNull User creator, @Nullable List<User> moreUsers);
 
     void editMap(@NonNull Map map);
 }

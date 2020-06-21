@@ -1,5 +1,7 @@
 package com.gmail.ivan.morozyk.mappy.data.firestore;
 
+import android.util.Log;
+
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.data.model.MapModel;
@@ -18,6 +20,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 public class FirestoreMapModel implements MapModel {
 
@@ -95,13 +100,14 @@ public class FirestoreMapModel implements MapModel {
     }
 
     @Override
-    public void addMap(@NonNull Map map, @NonNull User creator, @Nullable User... moreUsers) {
+    public Single<String> addMap(@NonNull Map map, @NonNull User creator, @Nullable List<User> moreUsers) {
         List<User> users = new ArrayList<>();
         users.add(creator);
         if (moreUsers != null) {
-            users.addAll(Arrays.asList(moreUsers));
+            users.addAll(moreUsers);
         }
 
+        Subject<String> subject = PublishSubject.create();
         db.collection("maps")
           .add(map)
           .addOnSuccessListener(mapRef -> {
@@ -121,7 +127,12 @@ public class FirestoreMapModel implements MapModel {
                     .document(mapRef.getId())
                     .set(mapRefContainer);
               }
+
+              subject.onNext(mapRef.getId());
+              subject.onComplete();
           });
+
+        return subject.singleOrError();
     }
 
     @Override

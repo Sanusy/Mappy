@@ -4,4 +4,20 @@
     <!-- Map List Strings -->
     <string name="empty_map_list">There is no maps!</string>
     <string name="logout">Logout</string>
+
+    <!-- New Map Strings   -->
+    <string name="new_map_action_bar_title">New Map</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">Add</string>
+    <string name="new_map_title_hint">Map Title</string>
+    <string name="new_map_description_hint">Map Description</string>
+    <string name="empty_title_error_new_map">Empty Title!</string>
+    <string name="add_user_new_map_btn">ADD USER</string>
+
+    <!-- Add User Dialog Strings   -->
+    <string name="add_user_dialog_title">Enter user e-mail:</string>
+    <string name="add_user_e_mail_hint">E-mail</string>
+    <string name="add_user_invalid_email">There is no such user</string>
+    <string name="add_user_already_added">This user is already added</string>
+
 </resources>
