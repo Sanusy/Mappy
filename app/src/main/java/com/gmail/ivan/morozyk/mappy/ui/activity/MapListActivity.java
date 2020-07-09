@@ -94,7 +94,7 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
 
     @Override
     public void openMap(@NonNull Map map) {
-        // TODO: 6/5/2020 opens MapFragment
+        startActivity(MapActivity.newIntent(this, map));
     }
 
     @Override

@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".ui.activity.MapListActivity" />
         <activity android:name=".ui.activity.NewMapActivity" />
+        <activity android:name=".ui.activity.MapActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

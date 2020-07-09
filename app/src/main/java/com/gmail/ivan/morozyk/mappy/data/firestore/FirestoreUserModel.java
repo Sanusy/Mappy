@@ -1,7 +1,5 @@
 package com.gmail.ivan.morozyk.mappy.data.firestore;
 
-import android.util.Log;
-
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.data.model.UserModel;
@@ -96,7 +94,7 @@ public class FirestoreUserModel implements UserModel {
                   })
                   .addOnFailureListener(subscriber::onError);
             } else {
-                subscriber.onError(null);
+                subscriber.onError(new NullPointerException("Returned null Firebase User"));
             }
         });
     }
