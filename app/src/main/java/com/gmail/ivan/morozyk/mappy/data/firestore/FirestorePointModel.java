@@ -4,14 +4,11 @@ import android.net.Uri;
 
 import com.gmail.ivan.morozyk.mappy.data.entity.Point;
 import com.gmail.ivan.morozyk.mappy.data.model.PointModel;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -71,42 +68,39 @@ public class FirestorePointModel implements PointModel {
     @NonNull
     @Override
     public Flowable<Point> getPoints() {
-        List<Task<?>> tasks = new ArrayList<>();
-
-        return Flowable.create(sub -> {
-            tasks.add(db.collection(pointsCollectionPath)
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot snapshot : Objects.requireNonNull(task.getResult())) {
-                                    Point point = snapshot.toObject(Point.class);
-                                    Flowable links =
-                                            Flowable.defer(() -> Flowable.create(subscriber -> {
-                                                db.collection(pointsCollectionPath)
-                                                  .document(point.getId())
-                                                  .collection("photos")
-                                                  .get()
-                                                  .addOnCompleteListener(taskPhotoLink -> {
-                                                      if (taskPhotoLink.isSuccessful()) {
-                                                          for (QueryDocumentSnapshot linkSnapshot : Objects.requireNonNull(
-                                                                  taskPhotoLink.getResult())) {
-                                                              if (linkSnapshot.get(
-                                                                      "photoName") != null) {
-                                                                  subscriber.onNext(linkSnapshot.get(
-                                                                          "photoName"));
-                                                              }
-                                                          }
-                                                          subscriber.onComplete();
-                                                      }
-                                                  });
-                                            }, BackpressureStrategy.BUFFER));
-                                    point.setPhotoLinks(links);
-                                    sub.onNext(point);
-                                }
-                            }
-                            Tasks.whenAllComplete(tasks)
-                                 .addOnCompleteListener(completed -> sub.onComplete());
-                        }));
+        return Flowable.create(subscriber -> {
+            db.collection(pointsCollectionPath)
+              .addSnapshotListener((snapshot, error) -> {
+                  for (DocumentChange dc : Objects.requireNonNull(snapshot)
+                                                  .getDocumentChanges()) {
+                      if (dc.getType() == DocumentChange.Type.ADDED) {
+                          Point point = dc.getDocument()
+                                          .toObject(Point.class);
+                          Flowable links =
+                                  Flowable.defer(() -> Flowable.create(linkSubscriber -> {
+                                      db.collection(pointsCollectionPath)
+                                        .document(point.getId())
+                                        .collection("photos")
+                                        .get()
+                                        .addOnCompleteListener(taskPhotoLink -> {
+                                            if (taskPhotoLink.isSuccessful()) {
+                                                for (QueryDocumentSnapshot linkSnapshot : Objects.requireNonNull(
+                                                        taskPhotoLink.getResult())) {
+                                                    if (linkSnapshot.get(
+                                                            "photoName") != null) {
+                                                        linkSubscriber.onNext(linkSnapshot.get(
+                                                                "photoName"));
+                                                    }
+                                                }
+                                                linkSubscriber.onComplete();
+                                            }
+                                        });
+                                  }, BackpressureStrategy.BUFFER));
+                          point.setPhotoLinks(links);
+                          subscriber.onNext(point);
+                      }
+                  }
+              });
         }, BackpressureStrategy.BUFFER);
     }
 }

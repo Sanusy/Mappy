@@ -62,8 +62,8 @@ public class NewMapActivity extends BaseActivity<NewMapPresenter, ActivityNewMap
     }
 
     @Override
-    public void openCreatedMap(@NonNull String mapId) {
-        // TODO: 6/11/2020 opens newly created map. Will be created in another task. Temp code below
+    public void openCreatedMap(@NonNull Map addedMap) {
+        startActivity(MapPagerActivity.newIntent(this, addedMap));
         finish();
     }
 

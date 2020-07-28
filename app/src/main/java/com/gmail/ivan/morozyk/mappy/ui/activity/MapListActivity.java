@@ -8,14 +8,11 @@ import android.view.View;
 
 import com.gmail.ivan.morozyk.mappy.R;
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
-import com.gmail.ivan.morozyk.mappy.data.firestore.FirestoreMapModel;
-import com.gmail.ivan.morozyk.mappy.data.firestore.FirestoreUserModel;
 import com.gmail.ivan.morozyk.mappy.databinding.ActivityMapListBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapListContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapListPresenter;
 import com.gmail.ivan.morozyk.mappy.ui.adapter.MapListAdapter;
 
-import java.util.Collections;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -94,7 +91,7 @@ public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapL
 
     @Override
     public void openMap(@NonNull Map map) {
-        startActivity(MapActivity.newIntent(this, map));
+        startActivity(MapPagerActivity.newIntent(this, map));
     }
 
     @Override
