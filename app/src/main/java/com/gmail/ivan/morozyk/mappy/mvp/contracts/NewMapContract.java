@@ -19,7 +19,7 @@ public interface NewMapContract {
         @StateStrategyType(SkipStrategy.class)
         void showUsers(@NonNull Flowable<User> users);
 
-        void openCreatedMap(@NonNull String mapId);
+        void openCreatedMap(@NonNull Map addedMap);
 
         void cancel();
 

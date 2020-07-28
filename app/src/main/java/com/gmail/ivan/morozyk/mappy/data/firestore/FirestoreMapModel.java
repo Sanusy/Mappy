@@ -1,17 +1,16 @@
 package com.gmail.ivan.morozyk.mappy.data.firestore;
 
-import android.util.Log;
-
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.data.model.MapModel;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -100,14 +99,17 @@ public class FirestoreMapModel implements MapModel {
     }
 
     @Override
-    public Single<String> addMap(@NonNull Map map, @NonNull User creator, @Nullable List<User> moreUsers) {
+    @NonNull
+    public Single<Map> addMap(@NonNull Map map,
+                              @NonNull User creator,
+                              @Nullable List<User> moreUsers) {
         List<User> users = new ArrayList<>();
         users.add(creator);
         if (moreUsers != null) {
             users.addAll(moreUsers);
         }
 
-        Subject<String> subject = PublishSubject.create();
+        Subject<Map> subject = PublishSubject.create();
         db.collection("maps")
           .add(map)
           .addOnSuccessListener(mapRef -> {
@@ -128,8 +130,14 @@ public class FirestoreMapModel implements MapModel {
                     .set(mapRefContainer);
               }
 
-              subject.onNext(mapRef.getId());
-              subject.onComplete();
+              mapRef.get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            subject.onNext(documentSnapshot.toObject(Map.class));
+                            subject.onComplete();
+                        }
+                    });
           });
 
         return subject.singleOrError();

@@ -53,7 +53,7 @@ public class NewMapPresenter extends BasePresenter<NewMapContract.View>
             getViewState().emptyTitle();
         } else {
             mapModel.addMap(map, usersToAdd.get(0), usersToAdd.subList(1, usersToAdd.size()))
-                    .subscribe(mapId -> getViewState().openCreatedMap(mapId));
+                    .subscribe(addedMap -> getViewState().openCreatedMap(addedMap));
         }
     }
 

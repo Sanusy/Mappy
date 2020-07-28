@@ -19,7 +19,8 @@ public interface MapModel {
 
     void addUser(@NonNull User user, @NonNull Map map);
 
-    Single<String> addMap(@NonNull Map map, @NonNull User creator, @Nullable List<User> moreUsers);
+    @NonNull
+    Single<Map> addMap(@NonNull Map map, @NonNull User creator, @Nullable List<User> moreUsers);
 
     void editMap(@NonNull Map map);
 }
