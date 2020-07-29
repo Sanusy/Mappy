@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import moxy.MvpAppCompatActivity;
 
-public abstract class BaseActivity<P extends BasePresenter, B extends ViewBinding>
+public abstract class BaseActivity<B extends ViewBinding>
         extends MvpAppCompatActivity
         implements BaseContract.View {
 

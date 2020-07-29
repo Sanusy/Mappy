@@ -7,7 +7,7 @@ import com.gmail.ivan.morozyk.mappy.mvp.presenter.NewPointPresenter;
 
 import androidx.annotation.NonNull;
 
-public class NewPointActivity extends BaseActivity<NewPointPresenter, ActivityNewPointBinding>
+public class NewPointActivity extends BaseActivity<ActivityNewPointBinding>
         implements NewPointContract.View {
 
     @Override

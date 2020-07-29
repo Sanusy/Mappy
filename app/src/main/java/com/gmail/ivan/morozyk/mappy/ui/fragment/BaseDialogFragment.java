@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 import moxy.MvpAppCompatDialogFragment;
 import moxy.presenter.ProvidePresenter;
 
-public abstract class BaseDialogFragment<P extends BasePresenter> extends MvpAppCompatDialogFragment
+public abstract class BaseDialogFragment extends MvpAppCompatDialogFragment
         implements BaseContract.View {
 
     @Override
@@ -26,7 +26,7 @@ public abstract class BaseDialogFragment<P extends BasePresenter> extends MvpApp
         requireBaseActivity().hideProgress();
     }
 
-    public BaseActivity<?, ?> requireBaseActivity() {
-        return (BaseActivity<?, ?>) requireActivity();
+    public BaseActivity<?> requireBaseActivity() {
+        return (BaseActivity<?>) requireActivity();
     }
 }
