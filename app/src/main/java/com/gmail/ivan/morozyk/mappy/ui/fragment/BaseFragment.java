@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
 import moxy.MvpAppCompatFragment;
 
-public abstract class BaseFragment<P extends BasePresenter, B extends ViewBinding>
+public abstract class BaseFragment<B extends ViewBinding>
         extends MvpAppCompatFragment
         implements BaseContract.View {
 
@@ -58,7 +58,7 @@ public abstract class BaseFragment<P extends BasePresenter, B extends ViewBindin
     }
 
     @NonNull
-    public BaseActivity<?, ?> requireBaseActivity() {
-        return (BaseActivity<?, ?>) requireActivity();
+    public BaseActivity<?> requireBaseActivity() {
+        return (BaseActivity<?>) requireActivity();
     }
 }

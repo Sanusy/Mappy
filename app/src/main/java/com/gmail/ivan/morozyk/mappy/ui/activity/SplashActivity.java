@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import moxy.presenter.InjectPresenter;
 
-public class SplashActivity extends BaseActivity<SplashPresenter, ActivitySplashBinding>
+public class SplashActivity extends BaseActivity<ActivitySplashBinding>
         implements SplashContract.View {
 
     private static final int REQUEST_LOG_IN = 0;

@@ -1,7 +1,5 @@
 package com.gmail.ivan.morozyk.mappy.ui.adapter;
 
-import com.gmail.ivan.morozyk.mappy.ui.fragment.BaseFragment;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -14,11 +12,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public abstract class BasePagerAdapter extends FragmentStateAdapter {
 
-    @NonNull
-    public List<Fragment> getFragmentList() {
-        return Objects.requireNonNull(fragmentList);
-    }
-
     @Nullable
     private final List<Fragment> fragmentList;
 
@@ -26,6 +19,11 @@ public abstract class BasePagerAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
 
         fragmentList = setFragmentList();
+    }
+
+    @NonNull
+    public List<Fragment> getFragmentList() {
+        return Objects.requireNonNull(fragmentList);
     }
 
     @Override

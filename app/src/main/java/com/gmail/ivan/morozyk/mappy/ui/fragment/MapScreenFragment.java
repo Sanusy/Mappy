@@ -41,16 +41,19 @@ import io.reactivex.rxjava3.core.Flowable;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 
-public class MapScreenFragment extends BaseFragment<MapScreenPresenter, FragmentMapScreenBinding>
+public class MapScreenFragment extends BaseFragment<FragmentMapScreenBinding>
         implements MapScreenContract.View {
+
+    public static final String[] LOCATION_PERMISSIONS = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION};
 
     private static final String MAP_ID = "map_id";
 
     private static final int REQUEST_LOCATION = 0;
 
-    public static final String[] LOCATION_PERMISSIONS = {
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION};
+    @NonNull
+    private final Map<Point, Marker> points = new HashMap<>();
 
     @InjectPresenter
     MapScreenPresenter presenter;
@@ -58,66 +61,24 @@ public class MapScreenFragment extends BaseFragment<MapScreenPresenter, Fragment
     @Nullable
     private GoogleMap map;
 
-    @NonNull
-    private final Map<Point, Marker> points = new HashMap<>();
-
     @Nullable
     private LatLng focusPoint;
 
     @Nullable
     private PhotoRecyclerAdapter photoRecyclerAdapter;
 
+    public static MapScreenFragment newInstance(@NonNull String mapId) {
+        Bundle args = new Bundle();
+        args.putString(MAP_ID, mapId);
+        MapScreenFragment fragment = new MapScreenFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @ProvidePresenter
     MapScreenPresenter providePresenter() {
         return new MapScreenPresenter(Objects.requireNonNull(Objects.requireNonNull(getArguments())
                                                                     .getString(MAP_ID)));
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        photoRecyclerAdapter = new PhotoRecyclerAdapter();
-        getBinding().pointPhotosMapRecycler.setAdapter(photoRecyclerAdapter);
-
-        BottomSheetBehavior.from(getBinding().mapBottomSheet)
-                           .setState(BottomSheetBehavior.STATE_HIDDEN);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) Objects.requireNonNull(
-                getChildFragmentManager())
-                                                                     .findFragmentById(R.id.map);
-
-        Objects.requireNonNull(mapFragment)
-               .getMapAsync(new OnMapReadyCallback() {
-                   @SuppressLint("MissingPermission")
-                   @Override
-                   public void onMapReady(GoogleMap googleMap) {
-                       map = googleMap;
-                       if (checkLocationPermission()) {
-                           requireMap().setMyLocationEnabled(true);
-                           focusMap();
-                       } else {
-                           requestPermissions(LOCATION_PERMISSIONS, REQUEST_LOCATION);
-                       }
-
-                       requireMap().setOnMapLongClickListener(latLng -> {
-                           presenter.createPoint(latLng);
-                       });
-
-                       requireMap().setOnMarkerClickListener(marker -> {
-                           for (Map.Entry<Point, Marker> pointEntry : points.entrySet()) {
-                               if (pointEntry.getValue()
-                                             .equals(marker)) {
-                                   presenter.loadPointDetails(pointEntry.getKey());
-                               }
-                           }
-
-                           return true;
-                       });
-
-                       presenter.loadPoints();
-                   }
-               });
     }
 
     @Override
@@ -234,6 +195,53 @@ public class MapScreenFragment extends BaseFragment<MapScreenPresenter, Fragment
         }
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        photoRecyclerAdapter = new PhotoRecyclerAdapter();
+        getBinding().pointPhotosMapRecycler.setAdapter(photoRecyclerAdapter);
+
+        BottomSheetBehavior.from(getBinding().mapBottomSheet)
+                           .setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) Objects.requireNonNull(
+                getChildFragmentManager())
+                                                                     .findFragmentById(R.id.map);
+
+        Objects.requireNonNull(mapFragment)
+               .getMapAsync(new OnMapReadyCallback() {
+                   @SuppressLint("MissingPermission")
+                   @Override
+                   public void onMapReady(GoogleMap googleMap) {
+                       map = googleMap;
+                       if (checkLocationPermission()) {
+                           requireMap().setMyLocationEnabled(true);
+                           focusMap();
+                       } else {
+                           requestPermissions(LOCATION_PERMISSIONS, REQUEST_LOCATION);
+                       }
+
+                       requireMap().setOnMapLongClickListener(latLng -> {
+                           presenter.createPoint(latLng);
+                       });
+
+                       requireMap().setOnMarkerClickListener(marker -> {
+                           for (Map.Entry<Point, Marker> pointEntry : points.entrySet()) {
+                               if (pointEntry.getValue()
+                                             .equals(marker)) {
+                                   presenter.loadPointDetails(pointEntry.getKey());
+                               }
+                           }
+
+                           return true;
+                       });
+
+                       presenter.loadPoints();
+                   }
+               });
+    }
+
     @NonNull
     private GoogleMap requireMap() {
         return Objects.requireNonNull(map);
@@ -244,13 +252,5 @@ public class MapScreenFragment extends BaseFragment<MapScreenPresenter, Fragment
                                                       @Nullable ViewGroup container,
                                                       boolean attachToRoot) {
         return FragmentMapScreenBinding.inflate(inflater, container, false);
-    }
-
-    public static MapScreenFragment newInstance(@NonNull String mapId) {
-        Bundle args = new Bundle();
-        args.putString(MAP_ID, mapId);
-        MapScreenFragment fragment = new MapScreenFragment();
-        fragment.setArguments(args);
-        return fragment;
     }
 }

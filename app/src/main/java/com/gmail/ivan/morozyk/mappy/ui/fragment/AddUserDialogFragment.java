@@ -22,7 +22,7 @@ import androidx.fragment.app.DialogFragment;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 
-public class AddUserDialogFragment extends BaseDialogFragment<AddUserPresenter>
+public class AddUserDialogFragment extends BaseDialogFragment
         implements AddUserContract.View {
 
     private static final String ADDED_USERS = "added_users";

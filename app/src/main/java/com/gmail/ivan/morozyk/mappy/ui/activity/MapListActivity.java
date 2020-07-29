@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import io.reactivex.rxjava3.core.Flowable;
 import moxy.presenter.InjectPresenter;
 
-public class MapListActivity extends BaseActivity<MapListPresenter, ActivityMapListBinding>
+public class MapListActivity extends BaseActivity<ActivityMapListBinding>
         implements MapListContract.View {
 
     @InjectPresenter

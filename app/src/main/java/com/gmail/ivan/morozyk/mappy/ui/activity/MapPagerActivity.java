@@ -22,7 +22,7 @@ import androidx.fragment.app.Fragment;
 import moxy.presenter.InjectPresenter;
 
 public class MapPagerActivity
-        extends BaseActivity<MapPagerPresenter, ActivityMapBinding>
+        extends BaseActivity<ActivityMapBinding>
         implements MapPagerContract.View {
 
     @NonNull
@@ -37,6 +37,15 @@ public class MapPagerActivity
     @InjectPresenter
     MapPagerPresenter presenter;
 
+    public static Intent newIntent(@NonNull Context context, @NonNull Map map) {
+        Intent intent = new Intent(context, MapPagerActivity.class);
+
+        intent.putExtra(MAP_ID, map.getId());
+        intent.putExtra(MAP_NAME, map.getTitle());
+
+        return intent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,13 +57,6 @@ public class MapPagerActivity
                                                             : R.id.map_screen_tab);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putInt(SELECTED_TAB, getBinding().bottomNavigationView.getSelectedItemId());
-    }
-
     @NonNull
     @Override
     protected ActivityMapBinding inflateBinding() {
@@ -64,6 +66,13 @@ public class MapPagerActivity
     @Override
     public String getToolBarTitle() {
         return getIntent().getStringExtra(MAP_NAME);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(SELECTED_TAB, getBinding().bottomNavigationView.getSelectedItemId());
     }
 
     @Override
@@ -97,15 +106,6 @@ public class MapPagerActivity
     @Override
     public void hideProgress() {
         getBinding().mapProgressBar.setVisibility(View.GONE);
-    }
-
-    public static Intent newIntent(@NonNull Context context, @NonNull Map map) {
-        Intent intent = new Intent(context, MapPagerActivity.class);
-
-        intent.putExtra(MAP_ID, map.getId());
-        intent.putExtra(MAP_NAME, map.getTitle());
-
-        return intent;
     }
 
     private class BottomNavigationItemSelected

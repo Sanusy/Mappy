@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import io.reactivex.rxjava3.core.Flowable;
 import moxy.presenter.InjectPresenter;
 
-public class NewMapActivity extends BaseActivity<NewMapPresenter, ActivityNewMapBinding>
+public class NewMapActivity extends BaseActivity<ActivityNewMapBinding>
         implements NewMapContract.View, AddUserDialogFragment.AddUserDialogListener {
 
     @InjectPresenter
@@ -53,6 +53,17 @@ public class NewMapActivity extends BaseActivity<NewMapPresenter, ActivityNewMap
         getBinding().newMapUserRecycler.setLayoutManager(new LinearLayoutManager(this));
         getMvpDelegate().onAttach();
         presenter.loadUsers();
+    }
+
+    @NonNull
+    @Override
+    protected ActivityNewMapBinding inflateBinding() {
+        return ActivityNewMapBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    public String getToolBarTitle() {
+        return getString(R.string.new_map_action_bar_title);
     }
 
     @Override
@@ -88,17 +99,6 @@ public class NewMapActivity extends BaseActivity<NewMapPresenter, ActivityNewMap
                                         @NonNull String addedUserEmail) {
 
         presenter.userAdded(addedUserEmail);
-    }
-
-    @NonNull
-    @Override
-    protected ActivityNewMapBinding inflateBinding() {
-        return ActivityNewMapBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
-    public String getToolBarTitle() {
-        return getString(R.string.new_map_action_bar_title);
     }
 
     @Override
