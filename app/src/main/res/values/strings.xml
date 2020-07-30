@@ -30,5 +30,12 @@
 
     <!-- New Point Activity   -->
     <string name="new_point_toolbar_title">New Point</string>
+    <string name="new_point_title_hint_string">Point title</string>
+    <string name="new_point_description_hint_string">Point description</string>
+    <string name="add_photo_string">Add photo</string>
+    <string name="add_point_string">Add</string>
+    <string name="cancel_new_point_string">Cancel</string>
+    <string name="new_point_title_error_string">Invalid title</string>
+    <string name="new_point_description_error_string">Invalid description</string>
 
 </resources>

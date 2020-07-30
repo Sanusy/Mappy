@@ -37,7 +37,13 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ui.activity.SplashActivity" android:noHistory="true">
+        <activity android:name=".ui.activity.MainActivity">
+
+        </activity>
+
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,8 +51,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.MapListActivity" />
-        <activity android:name=".ui.activity.NewMapActivity"/>
+        <activity android:name=".ui.activity.NewMapActivity" />
         <activity android:name=".ui.activity.MapPagerActivity" />
+        <activity android:name=".ui.activity.NewPointActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

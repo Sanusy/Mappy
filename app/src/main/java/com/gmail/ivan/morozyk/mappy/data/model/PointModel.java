@@ -6,10 +6,11 @@ import com.gmail.ivan.morozyk.mappy.data.entity.Point;
 
 import androidx.annotation.NonNull;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 public interface PointModel {
 
-    void addPoint(@NonNull Point point);
+    Single<Point> addPoint(@NonNull Point point);
 
     void deletePoint(@NonNull Point point);
 

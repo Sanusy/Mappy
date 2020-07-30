@@ -11,9 +11,11 @@ import android.widget.Toast;
 
 import com.gmail.ivan.morozyk.mappy.R;
 import com.gmail.ivan.morozyk.mappy.data.entity.Point;
+import com.gmail.ivan.morozyk.mappy.data.firestore.FirestorePhotoModel;
 import com.gmail.ivan.morozyk.mappy.databinding.FragmentMapScreenBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapScreenContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapScreenPresenter;
+import com.gmail.ivan.morozyk.mappy.ui.activity.NewPointActivity;
 import com.gmail.ivan.morozyk.mappy.ui.adapter.PhotoRecyclerAdapter;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -37,7 +39,10 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
 
@@ -143,16 +148,28 @@ public class MapScreenFragment extends BaseFragment<MapScreenPresenter, Fragment
 
         Objects.requireNonNull(photoRecyclerAdapter)
                .clear();
-        photoRecyclerAdapter.observeAdd(Objects.requireNonNull(Objects.requireNonNull(point.getPhotoLinks())
-                                                                      .doOnNext(s -> getBinding().pointPhotosMapRecycler.setVisibility(
-                                                                              View.VISIBLE))));
+        Subject<String> uriSubject = PublishSubject.create();
+        Objects.requireNonNull(point.getPhotoLinks())
+               .subscribe(uri -> {
+                   FirestorePhotoModel.getDownloadUri(uri)
+                                      .addOnCompleteListener(task -> uriSubject.onNext(
+                                              Objects.requireNonNull(task.getResult())
+                                                     .toString()));
+               });
+        photoRecyclerAdapter.observeAdd(uriSubject.toFlowable(BackpressureStrategy.BUFFER)
+                                                  .doOnNext(s -> getBinding().pointPhotosMapRecycler.setVisibility(
+                                                          View.VISIBLE)));
     }
 
     @Override
     public void openNewPoint(@NonNull LatLng latLng) {
-        Toast.makeText(requireContext(), "Open new point", Toast.LENGTH_SHORT)
-             .show();
-        // TODO: 7/16/2020 will be created in another task. opens NewPoint
+        startActivity(NewPointActivity.newIntent(requireContext(),
+                                                 Objects.requireNonNull(Objects.requireNonNull(
+                                                         getArguments())
+                                                                               .getString(
+                                                                                       MAP_ID)),
+                                                 latLng.latitude,
+                                                 latLng.longitude));
     }
 
     @Override
