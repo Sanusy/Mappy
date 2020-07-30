@@ -14,6 +14,9 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.subjects.PublishSubject;
+import io.reactivex.rxjava3.subjects.Subject;
 
 public class FirestorePointModel implements PointModel {
 
@@ -29,9 +32,18 @@ public class FirestorePointModel implements PointModel {
     }
 
     @Override
-    public void addPoint(@NonNull Point point) {
+    public Single<Point> addPoint(@NonNull Point point) {
+        Subject<Point> subject = PublishSubject.create();
         db.collection(pointsCollectionPath)
-          .add(point);
+          .add(point)
+          .addOnSuccessListener(documentReference -> documentReference.get()
+                                                                      .addOnSuccessListener(
+                                                                              documentSnapshot -> {
+                                                                                  subject.onNext(documentSnapshot.toObject(Point.class));
+                                                                                  subject.onComplete();
+                                                                              }));
+
+        return subject.singleOrError();
     }
 
     @Override

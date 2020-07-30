@@ -46,12 +46,6 @@ public class MapScreenPresenter extends BasePresenter<MapScreenContract.View>
     @Override
     public void createPoint(@NonNull LatLng latLng) {
         getViewState().openNewPoint(latLng);
-
-        // TODO: 7/18/2020 test code next
-        pointModel.addPoint(new Point("Test point",
-                                      "Test Point description",
-                                      latLng.latitude,
-                                      latLng.longitude));
     }
 
     @Override

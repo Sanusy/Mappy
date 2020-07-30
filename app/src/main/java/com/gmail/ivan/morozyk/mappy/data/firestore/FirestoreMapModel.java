@@ -3,10 +3,8 @@ package com.gmail.ivan.morozyk.mappy.data.firestore;
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.data.model.MapModel;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -131,12 +129,9 @@ public class FirestoreMapModel implements MapModel {
               }
 
               mapRef.get()
-                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot) {
-                            subject.onNext(documentSnapshot.toObject(Map.class));
-                            subject.onComplete();
-                        }
+                    .addOnSuccessListener(documentSnapshot -> {
+                        subject.onNext(documentSnapshot.toObject(Map.class));
+                        subject.onComplete();
                     });
           });
 
