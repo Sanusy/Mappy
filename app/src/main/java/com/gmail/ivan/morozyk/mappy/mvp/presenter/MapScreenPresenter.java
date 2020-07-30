@@ -60,7 +60,7 @@ public class MapScreenPresenter extends BasePresenter<MapScreenContract.View>
 
     @Override
     public void openEdit(@NonNull Point point) {
-        getViewState().openEdit(point);
+        getViewState().openEdit(point, mapId);
     }
 
     private void observeChanges() {

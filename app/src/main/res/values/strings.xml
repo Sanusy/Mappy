@@ -30,6 +30,7 @@
 
     <!-- New Point Activity   -->
     <string name="new_point_toolbar_title">New Point</string>
+<<<<<<< HEAD
     <string name="new_point_title_hint_string">Point title</string>
     <string name="new_point_description_hint_string">Point description</string>
     <string name="add_photo_string">Add photo</string>
@@ -37,5 +38,18 @@
     <string name="cancel_new_point_string">Cancel</string>
     <string name="new_point_title_error_string">Invalid title</string>
     <string name="new_point_description_error_string">Invalid description</string>
+=======
+    
+    <!-- Edit Point Activity   -->
+    <string name="edit_point_title_hint_string">Point title</string>
+    <string name="edit_point_description_hint_string">Point description</string>
+    <string name="edit_point_title_error_string">Invalid title</string>
+    <string name="edit_point_description_error_string">Invalid description</string>
+    <string name="edit_point_save_string">Save</string>
+    <string name="edit_point_add_photo_string">Add photo</string>
+    <string name="edit_point_cancel_string">Cancel</string>
+    <string name="edit_point_delete_string">Delete</string>
+    <string name="edit_point_toolbar_title">Edit point</string>
+>>>>>>> 2aa45fc... process
 
 </resources>

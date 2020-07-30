@@ -16,6 +16,7 @@ import com.gmail.ivan.morozyk.mappy.databinding.FragmentMapScreenBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapScreenContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapScreenPresenter;
 import com.gmail.ivan.morozyk.mappy.ui.activity.NewPointActivity;
+import com.gmail.ivan.morozyk.mappy.ui.activity.EditPointActivity;
 import com.gmail.ivan.morozyk.mappy.ui.adapter.PhotoRecyclerAdapter;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -72,14 +73,6 @@ public class MapScreenFragment extends BaseFragment<FragmentMapScreenBinding>
     @Nullable
     private PhotoRecyclerAdapter photoRecyclerAdapter;
 
-    public static MapScreenFragment newInstance(@NonNull String mapId) {
-        Bundle args = new Bundle();
-        args.putString(MAP_ID, mapId);
-        MapScreenFragment fragment = new MapScreenFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @ProvidePresenter
     MapScreenPresenter providePresenter() {
         return new MapScreenPresenter(Objects.requireNonNull(Objects.requireNonNull(getArguments())
@@ -134,10 +127,8 @@ public class MapScreenFragment extends BaseFragment<FragmentMapScreenBinding>
     }
 
     @Override
-    public void openEdit(@NonNull Point point) {
-        Toast.makeText(requireContext(), "Open edit point", Toast.LENGTH_SHORT)
-             .show();
-        // TODO: 7/16/2020 will be created in another task. opens EditPoint
+    public void openEdit(@NonNull Point point, @NonNull String mapId) {
+        startActivity(EditPointActivity.newIntent(requireContext(), point.getId(), mapId));
     }
 
     @Override
@@ -259,6 +250,14 @@ public class MapScreenFragment extends BaseFragment<FragmentMapScreenBinding>
                });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        BottomSheetBehavior.from(getBinding().mapBottomSheet)
+                           .setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
     @NonNull
     private GoogleMap requireMap() {
         return Objects.requireNonNull(map);
@@ -269,5 +268,13 @@ public class MapScreenFragment extends BaseFragment<FragmentMapScreenBinding>
                                                       @Nullable ViewGroup container,
                                                       boolean attachToRoot) {
         return FragmentMapScreenBinding.inflate(inflater, container, false);
+    }
+
+    public static MapScreenFragment newInstance(@NonNull String mapId) {
+        Bundle args = new Bundle();
+        args.putString(MAP_ID, mapId);
+        MapScreenFragment fragment = new MapScreenFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }

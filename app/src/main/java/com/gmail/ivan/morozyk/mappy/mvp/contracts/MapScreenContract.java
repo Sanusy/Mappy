@@ -22,7 +22,7 @@ public interface MapScreenContract {
 
         void openNewPoint(@NonNull LatLng latLng);
 
-        void openEdit(@NonNull Point point);
+        void openEdit(@NonNull Point point, @NonNull String mapId);
 
         @StateStrategyType(SkipStrategy.class)
         void deletePoint(@NonNull Point point);
