@@ -24,7 +24,7 @@ public interface MapScreenContract {
 
         void openEdit(@NonNull Point point, @NonNull String mapId);
 
-        @StateStrategyType(SkipStrategy.class)
+        @StateStrategyType(OneExecutionStateStrategy.class)
         void deletePoint(@NonNull Point point);
 
         void editPoint(@NonNull Point point);
