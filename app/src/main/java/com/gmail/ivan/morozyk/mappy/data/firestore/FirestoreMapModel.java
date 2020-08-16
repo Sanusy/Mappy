@@ -3,10 +3,8 @@ package com.gmail.ivan.morozyk.mappy.data.firestore;
 import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.data.model.MapModel;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,32 +27,34 @@ public class FirestoreMapModel implements MapModel {
     @NonNull
     @Override
     public Flowable<User> getUsers(@NonNull Map map) {
-        List<Task<?>> tasks = new ArrayList<>();
-
         return Flowable.create(subscriber -> {
-            tasks.add(db.collection("maps")
-                        .document(map.getId())
-                        .collection("users")
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot userIdSnapshot : Objects.requireNonNull(
-                                        task.getResult())) {
-                                    tasks.add(Objects.requireNonNull(userIdSnapshot.getDocumentReference(
-                                            "userRef"))
-                                                     .get()
-                                                     .addOnSuccessListener(userSnapshot -> {
-                                                         subscriber.onNext(userSnapshot.toObject(
-                                                                 User.class));
-                                                     })
-                                                     .addOnFailureListener(subscriber::onError));
-                                }
-                            }
-                            Tasks.whenAllComplete(tasks)
-                                 .addOnCompleteListener(completed -> subscriber.onComplete());
-                        })
-                        .addOnFailureListener(subscriber::onError));
+            db.collection("maps")
+              .document(map.getId())
+              .collection("users")
+              .addSnapshotListener((snapshot, error) -> {
+                  for (DocumentChange dc : Objects.requireNonNull(snapshot)
+                                                  .getDocumentChanges()) {
+                      if (dc.getType() == DocumentChange.Type.ADDED) {
+                          subscriber.onNext(dc.getDocument()
+                                              .toObject(User.class));
+                      }
+                  }
+              });
         }, BackpressureStrategy.BUFFER);
+    }
+
+    @NonNull
+    @Override
+    public Single<Map> getMap(@NonNull String mapId) {
+        return Single.create(subscriber ->
+                                     db.collection("maps")
+                                       .document(mapId)
+                                       .get()
+                                       .addOnCompleteListener(mapSnapshot -> {
+                                           subscriber.onSuccess(Objects.requireNonNull(
+                                                   mapSnapshot.getResult())
+                                                                       .toObject(Map.class));
+                                       }));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class FirestoreMapModel implements MapModel {
           .document(map.getId())
           .collection("users")
           .document(user.getId())
-          .set(userRef);
+          .set(user);
 
         db.collection("users")
           .document(user.getId())

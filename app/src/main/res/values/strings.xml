@@ -49,4 +49,8 @@
     <string name="edit_point_delete_string">Delete</string>
     <string name="edit_point_toolbar_title">Edit point</string>
 
+    <!-- Map Details Screen   -->
+    <string name="map_details_add_user_string">Add user</string>
+    <string name="map_details_leave_map">Leave</string>
+
 </resources>

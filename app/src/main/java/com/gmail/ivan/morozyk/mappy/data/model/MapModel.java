@@ -15,6 +15,9 @@ public interface MapModel {
     @NonNull
     Flowable<User> getUsers(@NonNull Map map);
 
+    @NonNull
+    Single<Map> getMap(@NonNull String mapId);
+
     void leaveMap(@NonNull User user, @NonNull Map map);
 
     void addUser(@NonNull User user, @NonNull Map map);

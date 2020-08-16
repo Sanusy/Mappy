@@ -1,31 +1,41 @@
 package com.gmail.ivan.morozyk.mappy.mvp.contracts;
 
+import com.gmail.ivan.morozyk.mappy.data.entity.Map;
+import com.gmail.ivan.morozyk.mappy.data.entity.User;
+
+import java.util.List;
+
+import androidx.annotation.NonNull;
+import io.reactivex.rxjava3.core.Flowable;
+import moxy.viewstate.strategy.AddToEndSingleStrategy;
+import moxy.viewstate.strategy.SkipStrategy;
+import moxy.viewstate.strategy.StateStrategyType;
+
 public interface MapDetailsContract {
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     interface View extends BaseContract.View {
 
-        void showDetails();
+        @StateStrategyType(SkipStrategy.class)
+        void showUsers(@NonNull Flowable<User> users);
 
-        void enableEdit(boolean enabled);
+        void showDetails(@NonNull Map map);
 
-        void swipeSaveEdit();
+        @StateStrategyType(SkipStrategy.class)
+        void openNewUser(@NonNull List<User> addedUsers);
+
+        @StateStrategyType(SkipStrategy.class)
+        void closeMap();
     }
 
     interface Presenter extends BaseContract.Presenter {
 
-        void loadDetails(int mapId);
+        void loadDetails();
 
         void showAddUser();
 
+        void userAdded(@NonNull String userEmail);
+
         void leave();
-
-        void checkOwner();
-    }
-
-    interface Router extends BaseContract.Router {
-
-        void openAddUser();
-
-        void openLeaveConfirm();
     }
 }

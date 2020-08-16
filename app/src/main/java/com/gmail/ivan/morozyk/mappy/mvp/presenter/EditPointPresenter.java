@@ -29,7 +29,7 @@ public class EditPointPresenter extends BasePresenter<EditPointContract.View>
 
     private Point editedPoint;
 
-    private String pointId;
+    private final String pointId;
 
     public EditPointPresenter(@NonNull String pointId, @NonNull String mapId) {
         pointModel = new FirestorePointModel(mapId);
@@ -79,7 +79,7 @@ public class EditPointPresenter extends BasePresenter<EditPointContract.View>
     @Override
     public void delete() {
         Objects.requireNonNull(editedPoint.getPhotoLinks())
-               .subscribe(url -> FirestorePhotoModel.deletePhoto(url));
+               .subscribe(FirestorePhotoModel::deletePhoto);
         pointModel.deletePoint(editedPoint);
         getViewState().back();
     }

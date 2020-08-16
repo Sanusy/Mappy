@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.gmail.ivan.morozyk.mappy.R;
 import com.gmail.ivan.morozyk.mappy.data.entity.Point;
@@ -15,8 +14,8 @@ import com.gmail.ivan.morozyk.mappy.data.firestore.FirestorePhotoModel;
 import com.gmail.ivan.morozyk.mappy.databinding.FragmentMapScreenBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapScreenContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapScreenPresenter;
-import com.gmail.ivan.morozyk.mappy.ui.activity.NewPointActivity;
 import com.gmail.ivan.morozyk.mappy.ui.activity.EditPointActivity;
+import com.gmail.ivan.morozyk.mappy.ui.activity.NewPointActivity;
 import com.gmail.ivan.morozyk.mappy.ui.adapter.PhotoRecyclerAdapter;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
