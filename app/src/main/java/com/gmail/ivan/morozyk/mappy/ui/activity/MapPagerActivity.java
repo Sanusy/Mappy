@@ -11,6 +11,7 @@ import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.databinding.ActivityMapBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapPagerContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapPagerPresenter;
+import com.gmail.ivan.morozyk.mappy.ui.fragment.MapDetailsFragment;
 import com.gmail.ivan.morozyk.mappy.ui.fragment.MapScreenFragment;
 import com.gmail.ivan.morozyk.mappy.ui.fragment.TestFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -77,7 +78,8 @@ public class MapPagerActivity
 
     @Override
     public void openMapDetails() {
-        navigate(TestFragment.newInstance("asd", "asd"));
+        navigate(MapDetailsFragment.newInstance(Objects.requireNonNull(getIntent().getStringExtra(
+                MAP_ID))));
     }
 
     @Override

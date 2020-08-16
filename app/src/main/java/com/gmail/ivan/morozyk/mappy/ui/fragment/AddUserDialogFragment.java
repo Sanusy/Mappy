@@ -10,6 +10,7 @@ import com.gmail.ivan.morozyk.mappy.R;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.AddUserContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.AddUserPresenter;
+import com.gmail.ivan.morozyk.mappy.ui.activity.NewMapActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import moxy.presenter.ProvidePresenter;
 
 public class AddUserDialogFragment extends BaseDialogFragment
         implements AddUserContract.View {
+
+    public static final String USER_TO_ADD = "returned_user_to_add";
 
     private static final String ADDED_USERS = "added_users";
 
@@ -65,7 +68,12 @@ public class AddUserDialogFragment extends BaseDialogFragment
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dialogListener = (AddUserDialogListener) context;
+
+        if (context instanceof NewMapActivity) {
+            dialogListener = (AddUserDialogListener) context;
+        } else if (getParentFragment() instanceof AddUserDialogListener) {
+            dialogListener = (AddUserDialogListener) getParentFragment();
+        }
     }
 
     @NonNull

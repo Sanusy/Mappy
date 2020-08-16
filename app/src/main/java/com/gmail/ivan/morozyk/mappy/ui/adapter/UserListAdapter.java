@@ -1,10 +1,8 @@
 package com.gmail.ivan.morozyk.mappy.ui.adapter;
 
-import android.util.Log;
 import android.view.View;
 
 import com.gmail.ivan.morozyk.mappy.R;
-import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.databinding.ItemUserListBinding;
 import com.gmail.ivan.morozyk.mappy.ui.holder.BaseViewHolder;
