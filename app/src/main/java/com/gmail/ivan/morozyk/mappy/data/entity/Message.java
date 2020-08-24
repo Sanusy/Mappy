@@ -2,9 +2,12 @@ package com.gmail.ivan.morozyk.mappy.data.entity;
 
 import com.google.firebase.firestore.DocumentId;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.Date;
 import java.util.Objects;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -16,6 +19,9 @@ public class Message {
 
     @Nullable
     private String senderName;
+
+    @NonNull
+    private String senderEmail;
 
     @Nullable
     private String text;
@@ -29,15 +35,20 @@ public class Message {
     @Nullable
     private Date date;
 
+    @MessageOwn
+    private int messageOwner;
+
     public Message() {
     }
 
     public Message(@NonNull String senderName,
+                   @NonNull String senderEmail,
                    @Nullable String text,
                    @Nullable String photoLink,
                    @Nullable Point point, @NonNull Date date) {
         this.id = "";
         this.senderName = senderName;
+        this.senderEmail = senderEmail;
         this.text = text;
         this.photoLink = photoLink;
         this.point = point;
@@ -46,10 +57,11 @@ public class Message {
 
     public Message(@NonNull String id,
                    @NonNull String senderName,
+                   @NonNull String senderEmail,
                    @Nullable String text,
                    @Nullable String photoLink,
                    @Nullable Point point, @NonNull Date date) {
-        this(senderName, text, photoLink, point, date);
+        this(senderName, senderEmail, text, photoLink, point, date);
 
         this.id = id;
 
@@ -88,5 +100,30 @@ public class Message {
     @NonNull
     public Date getDate() {
         return Objects.requireNonNull(date);
+    }
+
+    @MessageOwn
+    public int getMessageOwner() {
+        return messageOwner;
+    }
+
+    public void setMessageOwner(@MessageOwn int messageOwner) {
+        this.messageOwner = messageOwner;
+    }
+
+    @NonNull
+    public String getSenderEmail() {
+        return senderEmail;
+    }
+
+    public void setSenderEmail(@NonNull String senderEmail) {
+        this.senderEmail = senderEmail;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({MessageOwn.YOU, MessageOwn.OTHER_MEMBER})
+    public @interface MessageOwn {
+
+        int YOU = 1; int OTHER_MEMBER = 2;
     }
 }

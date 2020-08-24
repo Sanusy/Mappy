@@ -11,6 +11,7 @@ import com.gmail.ivan.morozyk.mappy.data.entity.Map;
 import com.gmail.ivan.morozyk.mappy.databinding.ActivityMapBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapPagerContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.MapPagerPresenter;
+import com.gmail.ivan.morozyk.mappy.ui.fragment.ChatFragment;
 import com.gmail.ivan.morozyk.mappy.ui.fragment.MapDetailsFragment;
 import com.gmail.ivan.morozyk.mappy.ui.fragment.MapScreenFragment;
 import com.gmail.ivan.morozyk.mappy.ui.fragment.TestFragment;
@@ -90,7 +91,8 @@ public class MapPagerActivity
 
     @Override
     public void openChat() {
-        navigate(TestFragment.newInstance("GGG", "WWW"));
+        navigate(ChatFragment.newInstance(Objects.requireNonNull(getIntent().getStringExtra(
+                MAP_ID))));
     }
 
     private void navigate(@NonNull Fragment fragment) {
