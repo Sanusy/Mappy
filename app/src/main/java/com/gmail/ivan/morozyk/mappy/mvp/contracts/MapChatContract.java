@@ -8,12 +8,16 @@ import com.gmail.ivan.morozyk.mappy.data.entity.Point;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import io.reactivex.rxjava3.core.Flowable;
+import moxy.viewstate.strategy.AddToEndSingleStrategy;
+import moxy.viewstate.strategy.StateStrategyType;
 
 public interface MapChatContract {
 
+    @StateStrategyType(AddToEndSingleStrategy.class)
     interface View extends BaseContract.View {
 
-        void showMessages(@NonNull List<Message> messageList);
+        void showMessages(@NonNull Flowable<Message> messageList);
 
         void showPoints(@NonNull List<Point> pointList);
 
@@ -22,6 +26,8 @@ public interface MapChatContract {
         void showDeleteMode();
 
         void showChatMode();
+
+        void clearMessage();
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -32,7 +38,7 @@ public interface MapChatContract {
 
         void loadPhotos();
 
-        void sendMessage(@NonNull Message message);
+        void sendTextMessage(@NonNull String message);
 
         void deleteMessages(@NonNull List<Message> messagesToDelete);
 

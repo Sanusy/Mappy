@@ -53,4 +53,7 @@
     <string name="map_details_add_user_string">Add user</string>
     <string name="map_details_leave_map">Leave</string>
 
+    <!-- Map Chat   -->
+    <string name="message_field_hint_string">Message</string>
+
 </resources>
