@@ -19,7 +19,7 @@ public interface MapChatContract {
 
         void showMessages(@NonNull Flowable<Message> messageList);
 
-        void showPoints(@NonNull List<Point> pointList);
+        void showPoints(@NonNull Flowable<Point> pointList);
 
         void showPhotos();
 
@@ -28,6 +28,10 @@ public interface MapChatContract {
         void showChatMode();
 
         void clearMessage();
+
+        void removePoint(@NonNull String pointId);
+
+        void editPoint(@NonNull Point pointToEdit);
     }
 
     interface Presenter extends BaseContract.Presenter {
@@ -39,6 +43,8 @@ public interface MapChatContract {
         void loadPhotos();
 
         void sendTextMessage(@NonNull String message);
+
+        void sendPointMessage(@NonNull Point point);
 
         void deleteMessages(@NonNull List<Message> messagesToDelete);
 

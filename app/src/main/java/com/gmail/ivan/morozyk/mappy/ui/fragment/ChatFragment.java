@@ -12,12 +12,14 @@ import com.gmail.ivan.morozyk.mappy.databinding.FragmentChatBinding;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapChatContract;
 import com.gmail.ivan.morozyk.mappy.mvp.presenter.ChatPresenter;
 import com.gmail.ivan.morozyk.mappy.ui.adapter.MessageAdapter;
+import com.gmail.ivan.morozyk.mappy.ui.adapter.PointRecyclerAdapter;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import io.reactivex.rxjava3.core.Flowable;
 import moxy.presenter.InjectPresenter;
 import moxy.presenter.ProvidePresenter;
@@ -26,6 +28,9 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding>
         implements MapChatContract.View {
 
     private static final String MAP_ID = "map_id";
+
+    @Nullable
+    private PointRecyclerAdapter pointAdapter;
 
     @InjectPresenter
     ChatPresenter presenter;
@@ -49,9 +54,10 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding>
         presenter.loadMessages();
 
         getBinding().chatSendMessageButton.setOnClickListener(v -> {
-            String message = getBinding().messageEditText.getText().toString();
+            String message = getBinding().messageEditText.getText()
+                                                         .toString();
 
-            if(!TextUtils.isEmpty(message)) {
+            if (!TextUtils.isEmpty(message)) {
                 presenter.sendTextMessage(message);
             }
         });
@@ -67,8 +73,15 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding>
     }
 
     @Override
-    public void showPoints(@NonNull List<Point> pointList) {
+    public void showPoints(@NonNull Flowable<Point> pointList) {
+        pointAdapter = new PointRecyclerAdapter();
 
+        getBinding().chatSendRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
+        getBinding().chatSendRecycler.setAdapter(pointAdapter);
+
+        pointAdapter.observeAdd(pointList);
+        BottomSheetBehavior.from(getBinding().chatBottomSheet)
+                           .setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
@@ -88,7 +101,25 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding>
 
     @Override
     public void clearMessage() {
-        getBinding().messageEditText.getText().clear();
+        getBinding().messageEditText.getText()
+                                    .clear();
+
+        BottomSheetBehavior.from(getBinding().chatBottomSheet)
+                           .setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    @Override
+    public void removePoint(@NonNull String pointId) {
+        if (pointAdapter != null) {
+            pointAdapter.remove(pointId);
+        }
+    }
+
+    @Override
+    public void editPoint(@NonNull Point pointToEdit) {
+        if (pointAdapter != null) {
+            pointAdapter.edit(pointToEdit);
+        }
     }
 
     @Override

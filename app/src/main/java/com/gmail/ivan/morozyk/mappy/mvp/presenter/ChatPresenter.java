@@ -9,9 +9,11 @@ import com.gmail.ivan.morozyk.mappy.data.entity.Point;
 import com.gmail.ivan.morozyk.mappy.data.entity.User;
 import com.gmail.ivan.morozyk.mappy.data.firestore.FirestoreMapModel;
 import com.gmail.ivan.morozyk.mappy.data.firestore.FirestoreMessageModel;
+import com.gmail.ivan.morozyk.mappy.data.firestore.FirestorePointModel;
 import com.gmail.ivan.morozyk.mappy.data.firestore.FirestoreUserModel;
 import com.gmail.ivan.morozyk.mappy.data.model.MapModel;
 import com.gmail.ivan.morozyk.mappy.data.model.MessageModel;
+import com.gmail.ivan.morozyk.mappy.data.model.PointModel;
 import com.gmail.ivan.morozyk.mappy.data.model.UserModel;
 import com.gmail.ivan.morozyk.mappy.mvp.contracts.MapChatContract;
 
@@ -33,6 +35,9 @@ public class ChatPresenter extends BasePresenter<MapChatContract.View>
     private final UserModel userModel = new FirestoreUserModel();
 
     @NonNull
+    private final PointModel pointModel;
+
+    @NonNull
     private final String mapId;
 
     @Nullable
@@ -48,6 +53,8 @@ public class ChatPresenter extends BasePresenter<MapChatContract.View>
         this.mapId = mapId;
         userModel.getSelf()
                  .subscribe(user -> this.user = user);
+
+        pointModel = new FirestorePointModel(mapId);
     }
 
     @Override
@@ -65,7 +72,11 @@ public class ChatPresenter extends BasePresenter<MapChatContract.View>
                                                                                .getEmail())
                                                                                         ? Message.MessageOwn.YOU
                                                                                         : Message.MessageOwn.OTHER_MEMBER);
-                                                                Log.d("TAG", "loadMessages: " + message.getSenderEmail() + message.getSenderName() + message.getMessageOwner());
+                                                                Log.d("TAG",
+                                                                      "loadMessages: "
+                                                                              + message.getSenderEmail()
+                                                                              + message.getSenderName()
+                                                                              + message.getMessageOwner());
 
                                                                 return message;
                                                             }));
@@ -74,7 +85,7 @@ public class ChatPresenter extends BasePresenter<MapChatContract.View>
 
     @Override
     public void loadPoints() {
-
+        getViewState().showPoints(pointModel.getPoints());
     }
 
     @Override
@@ -93,13 +104,22 @@ public class ChatPresenter extends BasePresenter<MapChatContract.View>
     }
 
     @Override
+    public void sendPointMessage(@NonNull Point point) {
+        Objects.requireNonNull(user);
+        Message message =
+                new Message(user.getName(), user.getEmail(), null, null, point, new Date());
+        Objects.requireNonNull(messageModel)
+               .sendMessage(message);
+    }
+
+    @Override
     public void deleteMessages(@NonNull List<Message> messagesToDelete) {
 
     }
 
     @Override
     public void showPhoto(@NonNull Bitmap photo) {
-
+        // TODO: 9/2/2020 show photo. will be created in another task
     }
 
     @Override
