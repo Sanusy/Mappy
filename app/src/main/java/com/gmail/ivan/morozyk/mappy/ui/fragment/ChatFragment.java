@@ -48,7 +48,7 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding>
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        messageAdapter = new MessageAdapter();
+        messageAdapter = new MessageAdapter(presenter);
         getBinding().chatRecycler.setAdapter(messageAdapter);
         getMvpDelegate().onAttach();
         presenter.loadMessages();

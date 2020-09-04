@@ -28,6 +28,11 @@ public class MessageAdapter
     private final List<Message> messages = new ArrayList<>();
 
     @NonNull
+    private final ChatPresenter presenter;
+
+    public MessageAdapter(@NonNull ChatPresenter presenter) {this.presenter = presenter;}
+
+    @NonNull
     @Override
     public BaseViewHolder<Message, ? extends ViewBinding> onCreateViewHolder(@NonNull ViewGroup parent,
                                                                              @Message.MessageOwn int viewType) {
@@ -35,11 +40,11 @@ public class MessageAdapter
         if (viewType == Message.MessageOwn.YOU) {
             View yourMessage = inflater.inflate(R.layout.item_your_message, parent, false);
 
-            return new YourMessageHolder(ItemYourMessageBinding.bind(yourMessage));
+            return new YourMessageHolder(ItemYourMessageBinding.bind(yourMessage), presenter);
         } else {
             View memberMessage = inflater.inflate(R.layout.item_member_message, parent, false);
 
-            return new MemberMessageHolder(ItemMemberMessageBinding.bind(memberMessage));
+            return new MemberMessageHolder(ItemMemberMessageBinding.bind(memberMessage), presenter);
         }
     }
 

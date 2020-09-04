@@ -11,6 +11,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/member_text_message_layout"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,14 +62,13 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/member_text_message_layout"
-        app:layout_constraintStart_toStartOf="@+id/member_text_message_layout"
-        app:layout_constraintTop_toTopOf="@+id/member_text_message_layout">
+        app:layout_constraintStart_toStartOf="@+id/member_text_message_layout">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/memm"
+            android:id="@+id/member_message_point_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            ma
+            android:layout_margin="8dp"
             tools:text="Point title" />
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
