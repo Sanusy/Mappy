@@ -64,6 +64,9 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding>
 
         getBinding().chatSendPhotoButton.setOnClickListener(v -> presenter.loadPhotos());
         getBinding().chatSendPointButton.setOnClickListener(v -> presenter.loadPoints());
+
+        BottomSheetBehavior.from(getBinding().chatBottomSheet)
+                           .setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
     @Override
@@ -74,14 +77,14 @@ public class ChatFragment extends BaseFragment<FragmentChatBinding>
 
     @Override
     public void showPoints(@NonNull Flowable<Point> pointList) {
-        pointAdapter = new PointRecyclerAdapter();
+        pointAdapter = new PointRecyclerAdapter(presenter);
 
         getBinding().chatSendRecycler.setLayoutManager(new LinearLayoutManager(requireContext()));
         getBinding().chatSendRecycler.setAdapter(pointAdapter);
 
         pointAdapter.observeAdd(pointList);
         BottomSheetBehavior.from(getBinding().chatBottomSheet)
-                           .setState(BottomSheetBehavior.STATE_EXPANDED);
+                           .setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
     }
 
     @Override

@@ -105,6 +105,7 @@ public class ChatPresenter extends BasePresenter<MapChatContract.View>
 
     @Override
     public void sendPointMessage(@NonNull Point point) {
+        getViewState().clearMessage();
         Objects.requireNonNull(user);
         Message message =
                 new Message(user.getName(), user.getEmail(), null, null, point, new Date());

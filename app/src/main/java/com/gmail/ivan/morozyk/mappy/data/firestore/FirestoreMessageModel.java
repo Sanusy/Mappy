@@ -47,6 +47,7 @@ public class FirestoreMessageModel implements MessageModel {
                                                                  .getId());
 
             messageData.put("senderName", message.getSenderName());
+            messageData.put("senderEmail", message.getSenderEmail());
             messageData.put("point", pointRef);
             messageData.put("date", message.getDate());
 

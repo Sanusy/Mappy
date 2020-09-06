@@ -37,17 +37,18 @@ public class MemberMessageHolder extends BaseViewHolder<Message, ItemMemberMessa
     public void bind(@NonNull Message entity) {
         message = entity;
 
-        if (entity.getText() != null) {
-            getBinding().memberTextMessageLayout.setVisibility(View.VISIBLE);
-            getBinding().memberPointMessageLayout.setVisibility(View.GONE);
-            getBinding().memberNicknameText.setText(entity.getSenderName());
-            getBinding().memberMessageText.setText(entity.getText());
+        getBinding().memberNicknameText.setText(entity.getSenderName());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        getBinding().memberSendTimeText.setText(dateFormat.format(entity.getDate()));
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            getBinding().memberSendTimeText.setText(dateFormat.format(entity.getDate()));
+        if (entity.getText() != null) {
+            getBinding().memberMessageText.setVisibility(View.VISIBLE);
+            getBinding().memberMessagePointButton.setVisibility(View.GONE);
+
+            getBinding().memberMessageText.setText(entity.getText());
         } else if (entity.getPoint() != null) {
-            getBinding().memberTextMessageLayout.setVisibility(View.GONE);
-            getBinding().memberPointMessageLayout.setVisibility(View.VISIBLE);
+            getBinding().memberMessageText.setVisibility(View.GONE);
+            getBinding().memberMessagePointButton.setVisibility(View.VISIBLE);
 
             getBinding().memberMessagePointButton.setText(entity.getPoint()
                                                                 .getTitle());

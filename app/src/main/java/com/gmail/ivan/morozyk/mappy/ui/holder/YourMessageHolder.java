@@ -36,17 +36,17 @@ public class YourMessageHolder extends BaseViewHolder<Message, ItemYourMessageBi
     public void bind(@NonNull Message entity) {
         message = entity;
 
+        getBinding().yourNicknameText.setText(entity.getSenderName());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        getBinding().yourSendTimeText.setText(dateFormat.format(entity.getDate()));
         if (entity.getText() != null) {
-            getBinding().yourTextMessageLayout.setVisibility(View.VISIBLE);
-            getBinding().yourPointMessageLayout.setVisibility(View.GONE);
-            getBinding().yourNicknameText.setText(entity.getSenderName());
-            getBinding().yourMessageText.setText(entity.getText());
+            getBinding().yourMessageText.setVisibility(View.VISIBLE);
+            getBinding().yourMessagePointButton.setVisibility(View.GONE);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-            getBinding().yourSendTimeText.setText(dateFormat.format(entity.getDate()));
+            getBinding().yourMessageText.setText(entity.getText());
         } else if (entity.getPoint() != null) {
-            getBinding().yourTextMessageLayout.setVisibility(View.GONE);
-            getBinding().yourPointMessageLayout.setVisibility(View.VISIBLE);
+            getBinding().yourMessageText.setVisibility(View.GONE);
+            getBinding().yourMessagePointButton.setVisibility(View.VISIBLE);
 
             getBinding().yourMessagePointButton.setText(entity.getPoint()
                                                                 .getTitle());
